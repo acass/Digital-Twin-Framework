@@ -1,5 +1,7 @@
 # Office Digital Twin Dashboard
 
+<img width="1346" height="659" alt="image" src="https://github.com/user-attachments/assets/a46e4e64-63f7-44a5-a0d6-55ace2b43e84" />
+
 Browser-based 3D IoT digital-twin dashboard. A stylized office renders as an interactive Three.js scene with floating holographic sensor data; a right-side control panel switches dashboard **modes** (Overview, Climate, Energy, Lighting, Security, Occupancy, Network, Maintenance), causing every floating value across the office to smoothly re-animate.
 
 Data is simulated by a modular provider, built so a live IoT/MQTT source can drop in later with minimal change.
