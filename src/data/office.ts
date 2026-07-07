@@ -40,7 +40,7 @@ export function buildOffice(): Office {
     room('reception', 'Reception', -8, -3.5, 8, 7, ['climate', 'light', 'door', 'motion']),
     room('conference', 'Conference Room', 0, -3.5, 8, 7, ['climate', 'light', 'motion', 'power']),
     room('manager', 'Manager Office', 8, -3.5, 8, 7, ['climate', 'light', 'power']),
-    room('open-office', 'Open Office', -4, 3.5, 16, 7, ['climate', 'light', 'motion', 'power']),
+    room('open-office', 'Open Office', -4.5, 3.5, 15, 7, ['climate', 'light', 'motion', 'power']),
     room('server', 'Server Room', 6, 3.5, 6, 7, ['climate', 'power', 'network', 'door']),
     room('kitchen', 'Kitchen', 10.5, 3.5, 3, 7, ['climate', 'light']),
   ]
