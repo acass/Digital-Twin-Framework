@@ -1,7 +1,9 @@
 import { create } from 'zustand'
 import type { ModeId, Office, Readings } from '../data/provider'
-import { OFFICE } from '../data/office'
+import { REAL_OFFICE } from '../data/realOffice'
 import { DummyProvider } from '../data/dummyProvider'
+
+export type ViewMode = 'wireframe' | 'solid'
 
 // Single source of truth. Swap `provider` for a live DataProvider later.
 const provider = new DummyProvider()
@@ -14,11 +16,13 @@ interface Selection {
 interface TwinState {
   office: Office
   activeMode: ModeId
+  viewMode: ViewMode
   selection: Selection
   readings: Readings // current target values, keyed by sensorId
   hoveredRoomId: string | null
 
   setMode: (mode: ModeId) => void
+  toggleViewMode: () => void
   selectRoom: (roomId: string | null) => void
   selectSensor: (sensorId: string | null, roomId: string | null) => void
   setHovered: (roomId: string | null) => void
@@ -27,14 +31,18 @@ interface TwinState {
 }
 
 export const useTwinStore = create<TwinState>((set, get) => ({
-  office: OFFICE,
+  office: REAL_OFFICE,
   activeMode: 'overview',
+  viewMode: 'solid',
   selection: { roomId: null, sensorId: null },
-  readings: provider.getReadings(OFFICE, 'overview'),
+  readings: provider.getReadings(REAL_OFFICE, 'overview'),
   hoveredRoomId: null,
 
   setMode: (mode) =>
     set({ activeMode: mode, readings: provider.getReadings(get().office, mode) }),
+
+  toggleViewMode: () =>
+    set({ viewMode: get().viewMode === 'solid' ? 'wireframe' : 'solid' }),
 
   selectRoom: (roomId) => set({ selection: { roomId, sensorId: null } }),
   selectSensor: (sensorId, roomId) => set({ selection: { roomId, sensorId } }),

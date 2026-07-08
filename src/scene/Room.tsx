@@ -3,11 +3,12 @@ import { Edges } from '@react-three/drei'
 import type { Room as RoomT } from '../data/provider'
 import { useTwinStore } from '../store/twinStore'
 import { CYAN, CYAN_DIM } from '../lib/colors'
-import { Sensor } from './Sensor'
+import { CALIBRATE } from '../data/realOffice'
 
 const WALL_H = 3
 
-export function Room({ room }: { room: RoomT }) {
+// pickOnly: render just the invisible fill for hover/click (solid mode), no cyan edges.
+export function Room({ room, pickOnly = false }: { room: RoomT; pickOnly?: boolean }) {
   const { x, z, w, d } = room.bounds
   const selectRoom = useTwinStore((s) => s.selectRoom)
   const setHovered = useTwinStore((s) => s.setHovered)
@@ -39,15 +40,24 @@ export function Room({ room }: { room: RoomT }) {
         <meshBasicMaterial
           color={CYAN}
           transparent
-          opacity={isSelected ? 0.1 : isHovered ? 0.06 : 0.02}
+          opacity={
+            pickOnly
+              ? isSelected
+                ? 0.08
+                : isHovered
+                  ? 0.05
+                  : CALIBRATE
+                    ? 0.04
+                    : 0
+              : isSelected
+                ? 0.1
+                : isHovered
+                  ? 0.06
+                  : 0.02
+          }
         />
-        <Edges threshold={15} color={edgeColor} />
+        {(!pickOnly || CALIBRATE) && <Edges threshold={15} color={edgeColor} />}
       </mesh>
-
-      {/* sensors are positioned relative to room center */}
-      {room.sensors.map((s) => (
-        <Sensor key={s.id} sensor={s} roomId={room.id} floorY={-WALL_H / 2} />
-      ))}
     </group>
   )
 }
